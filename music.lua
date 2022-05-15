@@ -1,4 +1,5 @@
 local speaker = peripheral.find('speaker')
+local monitor = peripheral.find('monitor')
 
 if not speaker then
     print('Music Player') 
@@ -6,7 +7,10 @@ if not speaker then
     return;
 end
 
-local isTouch = term.isColor() 
+local isTouch = term.isColor()
+local isMonitorTouch = monitor and monitor.isColor()
+local terminal = term
+if isMonitorTouch then terminal = monitor end
 local current = -1
 local playlist = {
     {'Random Menu Song', 'music.menu'},
@@ -29,26 +33,35 @@ local playlist = {
     {'Ward', 'music_disc.ward'},
 }
 
-local function playIndex(index)
-    current = index 
-    speaker.playSound(playlist[index][2])
+if isMonitorTouch then
+    monitor.setTextScale(0.5)
+    term.setTextColor(colors.green)
+    print('Music player running on Monitor')
 end
 
 local function printPlaylist()
-    term.clear()
-    term.setCursorPos(1,1)
-    term.setTextColor(colors.white)
-    for i, v in ipairs(playlist) do
-        if #v == 1 then
-            print(v[1])
-        else
-            if i == current then
-                term.setTextColor(colors.blue) 
-            end
-            print(i .. ') ' .. v[1])
-            term.setTextColor(colors .white)
-        end
+    terminal.clear()
+    terminal.setCursorPos(1,1)
+    terminal.setTextColor(colors.purple)
+    if isTouch or isMonitorTouch then
+        terminal.write('Music Player (Right click to play)')
+    else
+        terminal.write('Music Player')
     end
+    terminal.setTextColor(colors.white)
+    
+    for i, v in ipairs(playlist) do
+        if i == current then terminal.setTextColor(colors.blue) end
+        
+        terminal.setCursorPos(1, i +  1)
+        terminal.write(i .. ') ' .. v[1])
+        terminal.setTextColor(colors.white)
+    end
+end
+
+local function playIndex(index)
+    current = index
+    pcall(speaker.playSound, playlist[index][2])
 end
 
 local function keyScreen()
@@ -59,18 +72,22 @@ local function keyScreen()
 end
 
 local function touchScreen()
-    printPlaylist()     
-    local event, button, x, y = os.pullEvent("mouse_click")    
-    playIndex(y)
+    printPlaylist()
+    if isMonitorTouch then
+        local event, button, x, y = os.pullEvent("monitor_touch")    
+        playIndex(y-1)
+    else
+        local event, button, x, y = os.pullEvent("mouse_click")    
+        playIndex(y-1)
+    end
 end
 
 speaker.stop() -- stop on start
 while true do
-    if isTouch then
+    if isMonitorTouch or isTouch then
         touchScreen()
     else
         keyScreen()
     end
     sleep(0.1)
 end
-speaker.stop() -- stop on exit
