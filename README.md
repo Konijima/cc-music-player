@@ -1,4 +1,8 @@
 # cc-radio-player
+Simple music player for ComputerCraft.
+- Require a speaker to be connected.
+- Optionally connect with advanced monitor.
+- Use click/touch on advanced computers.
 
 ![](https://github.com/Konijima/cc-radio-player/blob/master/Screenshot_1.png?raw=true)
 
