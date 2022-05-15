@@ -8,7 +8,7 @@ Simple music player for ComputerCraft.
 
 ## Install
 ```
-wget https://raw.githubusercontent.com/Konijima/cc-radio-player/master/music.lua
+wget https://raw.githubusercontent.com/Konijima/cc-music-player/master/music.lua
 ```
 
 ## Run
