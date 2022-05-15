@@ -60,8 +60,12 @@ local function printPlaylist()
 end
 
 local function playIndex(index)
-    current = index
-    pcall(speaker.playSound, playlist[index][2])
+    local function play()
+        speaker.playSound(playlist[index][2])
+    end
+    if pcall(play) then
+        current = index
+    end
 end
 
 local function keyScreen()
