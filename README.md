@@ -1,4 +1,4 @@
-# cc-radio-player
+# cc-music-player
 Simple music player for ComputerCraft.
 - Require a speaker to be connected.
 - Optionally connect with advanced monitor.
