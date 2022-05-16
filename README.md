@@ -30,11 +30,11 @@ wget run https://raw.githubusercontent.com/Konijima/cc-music-player/master/music
 ## Startup
 To auto-run on startup, add this line to your `startup.lua` file:
 ```lua
--- installed copy
+-- run installed
 shell.run('music')
 
 -- OR
 
--- without installing
+-- run without installing
 shell.run('wget', 'run', 'https://raw.githubusercontent.com/Konijima/cc-music-player/master/music.lua')
 ```
